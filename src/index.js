@@ -20,6 +20,13 @@ function displayImageInfo(obj){
 
   let numLikes = document.getElementById('likes');
   numLikes.innerText = obj.like_count;
+
+  for (const comment of obj.comments){
+    let ul = document.getElementById('comments');
+    let li = document.createElement('li');
+    li.innerText = comment.content;
+    ul.append(li);
+  };
 };
 
 function incrementLike(){
@@ -44,13 +51,56 @@ function incrementLike(){
     .then(json => console.log(json))
 };
 
+function addComment(){
+  console.log('general kenobi')
+  let commentInput = document.querySelector('input');
+  let commentContent = commentInput.value;
+  let commentData = {
+    content: commentContent
+  };
+
+  let ul = document.getElementById('comments');
+  let li = document.createElement('li');
+  li.innerText = commentContent;
+  ul.append(li);
+
+  commentInput.value = ''
+
+  let liValues = document.querySelectorAll('li')
+  let commentData = []
+  for (const comment of liValues){
+    
+  }
+
+  let imgConfig = {
+    method: 'POST',
+    headers: {
+      'Content-Type': 'application/json'
+    },
+    body: JSON.stringify({
+      image_id: 4415,
+      comments: commentData
+    })
+  };
+
+  fetch(likeURL, imgConfig)
+    .then(resp => resp.json())
+    .then(json => console.log(json))
+};
+
+
 function globalListener(){
   document.addEventListener('click', function(e){
+    e.preventDefault();
     console.log(e.target);
     let likeBtn = document.getElementById('like_button');
-
+    let inputList = document.querySelectorAll('input');
+    let submitBtn = inputList[1];
     if (e.target === likeBtn){
       incrementLike();
+    } else if (e.target === submitBtn) {
+      addComment();
+      
     }
   })
 };
