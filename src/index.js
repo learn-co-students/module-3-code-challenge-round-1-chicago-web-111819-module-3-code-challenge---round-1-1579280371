@@ -49,7 +49,7 @@ const likeImg = () => {
 			body: JSON.stringify({like_count: newLikeCount})
 		}
 
-		fetch(imageURL, reqObj)
+		fetch(imageURL, reqObj) // incorrect url??
 			.then(resp => resp.json())
 			.then(data => data)
 	})
@@ -88,7 +88,7 @@ const postNewComment = (commentText) => {
 		body: JSON.stringify(bodyObj)
 	}
 
-	fetch(imageURL, reqObj)
+	fetch(imageURL, reqObj) //also incorrect url
 		.then(resp => resp.json())
 }
 
