@@ -9,6 +9,7 @@ const main = () => {
 
 		fetchImage(imageURL)
 		likeImg()
+		commentImg()
 	  })
 }
 
@@ -48,9 +49,41 @@ const likeImg = () => {
 			body: JSON.stringify({like_count: newLikeCount})
 		}
 
-		fetch(likeURL, reqObj) //WHAT ROUTE TO USE FOR PATCH?!!?!
+		// fetch(likeURL, reqObj) //WHAT ROUTE TO USE FOR PATCH?!!?!
 	})
 }
 
+const commentImg = () => {
+	const commentForm = document.querySelector('form#comment_form')
+
+	commentForm.addEventListener('submit', (e) => {
+		e.preventDefault()
+		const ul = document.querySelector('ul#comments')
+		const li = document.createElement('li')
+		const commentText = e.target.firstElementChild.value
+		li.innerText = commentText
+		ul.append(li)
+
+		// postNewComment(commentText)
+	})
+}
+
+// const postNewComment = (commentText) => {
+
+// 	const bodyObj = {
+// 		comments: {
+// 			content: aaaa,
+// 			image_id: ssss,
+// 		}
+// 	}
+// 	reqObj = {
+// 		method: "POST",
+// 		headers: {
+// 			"Content-Type": "application/json",
+// 			Accept: "application/json"
+// 		},
+// 		body: JSON.stringify()
+// 	}
+// }
 
 main()
