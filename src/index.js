@@ -11,7 +11,7 @@ function main() {
     const commentsURL = `https://randopic.herokuapp.com/comments/`;
 
     fetchImage(imageURL);
-    likeListener();
+    likeListener(likeURL);
     commentSubmitter(commentsURL);
 
   });
@@ -46,12 +46,15 @@ function renderComment(comment) {
   commentList.append(li);
 };
 
-function likeListener() {
+function likeListener(likeURL) {
   const button = document.querySelector('button#like_button');
-  button.addEventListener('click', () => {
+  button.addEventListener('click', (e) => {
     renderLike();
-    postLike();
-  })
+    const likeObj = {
+      image_id: e.target.parentNode.firstElementChild.dataset.id
+    };
+    postLike(likeObj,likeURL);
+  });
 };
 
 function renderLike() {
@@ -60,8 +63,17 @@ function renderLike() {
   likes.innerText = parseInt(likes.innerText) + 1;
 };
 
-function postLike() {
-
+function postLike(likeObj,URL) {
+  const reqObj = {
+    method: 'POST',
+    headers: {
+      'Accept': 'application/json',
+      'Content-Type': 'application/json'
+    },
+    body: JSON.stringify(likeObj)
+  };
+  fetch(URL,reqObj)
+  .catch(console.log);
 };
 
 function commentSubmitter(commentsURL) {
@@ -82,7 +94,7 @@ function commentSubmitter(commentsURL) {
   });
 };
 
-function postComment(commentObj,commentsURL) {
+function postComment(commentObj,URL) {
   const reqObj = {
     method: 'POST',
     headers: {
@@ -92,7 +104,8 @@ function postComment(commentObj,commentsURL) {
     body: JSON.stringify(commentObj)
   };
 
-  fetch(commentsURL, reqObj);
+  fetch(URL, reqObj)
+  .catch(console.log);
 };
 
 main();
