@@ -1,12 +1,63 @@
-document.addEventListener('DOMContentLoaded', () => {
-  console.log('%c DOM Content Loaded and Parsed!', 'color: magenta')
+let imageId = 4415 //Enter the id from the fetched image here
+const imageURL = `https://randopic.herokuapp.com/images/${imageId}`
+const likeURL = `https://randopic.herokuapp.com/likes/`
+const commentsURL = `https://randopic.herokuapp.com/comments/`
 
-  let imageId = 1 //Enter the id from the fetched image here
+function fetchImage(){
+  return fetch(imageURL)
+    .then(resp => resp.json())
+    .then(json => displayImageInfo(json))
+};
 
-  const imageURL = `https://randopic.herokuapp.com/images/${imageId}`
+function displayImageInfo(obj){
+  let parentDiv = document.getElementById('image_card')
+  let img = document.createElement('img');
+  img.src = obj.url;
+  parentDiv.insertBefore(img, parentDiv.children[2]);
 
-  const likeURL = `https://randopic.herokuapp.com/likes/`
+  let findH4 = document.getElementById('name');
+  findH4.innerText = obj.name;
 
-  const commentsURL = `https://randopic.herokuapp.com/comments/`
+  let numLikes = document.getElementById('likes');
+  numLikes.innerText = obj.like_count;
+};
 
+function incrementLike(){
+  let numLikes = document.getElementById('likes');
+  numInt = parseInt(numLikes.innerText);
+  numInt++;
+  numLikes.innerText = numInt;
+
+  let imgConfig = {
+    method: 'POST',
+    headers: {
+      'Content-Type': 'application/json'
+    },
+    body: JSON.stringify({
+      image_id: 4415,
+      like_count: numLikes.innerText
+    })
+  };
+
+  fetch(likeURL, imgConfig)
+    .then(resp => resp.json())
+    .then(json => console.log(json))
+};
+
+function globalListener(){
+  document.addEventListener('click', function(e){
+    console.log(e.target);
+    let likeBtn = document.getElementById('like_button');
+
+    if (e.target === likeBtn){
+      incrementLike();
+    }
+  })
+};
+
+document.addEventListener('DOMContentLoaded', function(){
+  console.log('%c DOM Content Loaded and Parsed!', 'color: magenta');
+
+  fetchImage();
+  globalListener();
 })
