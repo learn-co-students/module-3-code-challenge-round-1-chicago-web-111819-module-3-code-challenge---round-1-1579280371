@@ -32,6 +32,8 @@ function renderImage(imageData) {
   let imgLikes = document.querySelector("#likes");
   let imgCommentsDisplay = document.querySelector("#comments");
   let likeBtn = document.querySelector("#like_button");
+  let commentForm = document.forms["comment_form"];
+  let commentField = document.querySelector("#comment_input");
   
 
   // insert data
@@ -48,6 +50,7 @@ function renderImage(imageData) {
 
   // set up click listening
   likeBtn.addEventListener("click", (e) => {
+    e.preventDefault();
     let currentLikesCount = imgLikes.innerHTML;
     let newLikesCount = Number.parseInt(currentLikesCount) + 1;
     imgLikes.innerHTML = newLikesCount;
@@ -70,6 +73,34 @@ function renderImage(imageData) {
     fetch(likeURL, likesConfig)
       .then(res => res.json())
       .then(likes => console.log(likes));
+  });
+
+  // comment
+  commentForm.addEventListener("submit", (e) => {
+    e.preventDefault();
+    let comment = commentField.value;
+
+    
+    let li = document.createElement("li");
+    li.innerHTML = comment;
+    imgCommentsDisplay.appendChild(li);
+
+    let commentData = {
+      image_id: imageData.id,
+      content: comment
+    }
+    let commentConfig = {
+      method: "POST",
+      headers: {
+        "Content-Type": "application/json",
+        "Accept": "application/json"
+      },
+      body: JSON.stringify(commentData)
+    }
+
+    fetch(commentsURL, commentConfig)
+      .then(res => res.json())
+      .then(comment => console.log(comment));
   });
 
 }
