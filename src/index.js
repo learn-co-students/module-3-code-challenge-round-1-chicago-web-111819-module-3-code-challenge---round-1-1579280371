@@ -12,7 +12,7 @@ function main() {
 
     fetchImage(imageURL);
     likeListener();
-    commentSubmitter();
+    commentSubmitter(commentsURL);
 
   });
 };
@@ -64,17 +64,35 @@ function postLike() {
 
 };
 
-function commentSubmitter() {
+function commentSubmitter(commentsURL) {
   const form = document.querySelector('form#comment_form')
   form.addEventListener('submit', e => {
     e.preventDefault();
-    console.log(e.target.comment.value);
+    console.log(e.target.parentNode.firstElementChild.dataset.id);
     //optimistically renders comment
     const comment = e.target.comment.value;
     renderComment(comment);
+    const imageId = e.target.parentNode.firstElementChild.dataset.id;
+    const commentObj = {
+      content: comment,
+      image_id: imageId
+    };
+    postComment(commentObj,commentsURL);
     form.reset();
   });
-  
+};
+
+function postComment(commentObj,commentsURL) {
+  const reqObj = {
+    method: 'POST',
+    headers: {
+      'Accept': 'application/json',
+      'Content-Type': 'application/json'
+    },
+    body: JSON.stringify(commentObj)
+  };
+
+  fetch(commentsURL, reqObj);
 };
 
 main();
