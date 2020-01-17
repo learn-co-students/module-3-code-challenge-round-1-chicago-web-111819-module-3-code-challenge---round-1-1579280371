@@ -49,7 +49,9 @@ const likeImg = () => {
 			body: JSON.stringify({like_count: newLikeCount})
 		}
 
-		// fetch(likeURL, reqObj) //WHAT ROUTE TO USE FOR PATCH?!!?!
+		fetch(imageURL, reqObj)
+			.then(resp => resp.json())
+			.then(data => data)
 	})
 }
 
@@ -63,27 +65,31 @@ const commentImg = () => {
 		const commentText = e.target.firstElementChild.value
 		li.innerText = commentText
 		ul.append(li)
-
-		// postNewComment(commentText)
+		
+		postNewComment(commentText)
 	})
 }
 
-// const postNewComment = (commentText) => {
+const postNewComment = (commentText) => {
 
-// 	const bodyObj = {
-// 		comments: {
-// 			content: aaaa,
-// 			image_id: ssss,
-// 		}
-// 	}
-// 	reqObj = {
-// 		method: "POST",
-// 		headers: {
-// 			"Content-Type": "application/json",
-// 			Accept: "application/json"
-// 		},
-// 		body: JSON.stringify()
-// 	}
-// }
+	const bodyObj = {
+		comments: {
+			content: commentText,
+			image_id: 4416,
+		}
+	}
+
+	reqObj = {
+		method: "POST",
+		headers: {
+			"Content-Type": "application/json",
+			Accept: "application/json"
+		},
+		body: JSON.stringify(bodyObj)
+	}
+
+	fetch(imageURL, reqObj)
+		.then(resp => resp.json())
+}
 
 main()
