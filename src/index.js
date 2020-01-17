@@ -101,6 +101,8 @@ function renderImage(imageData) {
     fetch(commentsURL, commentConfig)
       .then(res => res.json())
       .then(comment => console.log(comment));
+
+    e.target.reset();
   });
 
 }
